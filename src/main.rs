@@ -66,7 +66,7 @@ fn run(commands: Vec<Command>, ascii_mode: bool) {
 
     loop {
         if cdx >= commands.len() {
-            break; // stop the execution at the end of the tape
+            break; // stop the execution at the end of the sourcecode, might be buggy
         }
         let command = &commands[cdx];
 
