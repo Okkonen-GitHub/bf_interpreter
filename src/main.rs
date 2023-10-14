@@ -59,7 +59,7 @@ fn lex(source: &str) -> Vec<Command> {
         }
     }
 
-    return commands;
+    commands
 }
 
 fn run(commands: Vec<Command>, ascii_mode: bool) {
@@ -153,7 +153,7 @@ fn main() {
         println!("Usage:\nbf_interpreter [-a/--ascii] <program.b[f]>");
         return;
     }
-    let ascii_mode = match args.iter().nth(1) {
+    let ascii_mode = match args.get(1) {
         Some(arg) => arg == "-a" || arg == "--ascii",
         None => false,
     };
