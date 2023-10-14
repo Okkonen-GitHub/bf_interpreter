@@ -150,7 +150,7 @@ fn main() {
     let args = std::env::args().collect::<Vec<String>>();
 
     if args.len() <= 1 {
-        println!("Usage:\nbf_interpreter <program.b[f]>");
+        println!("Usage:\nbf_interpreter [-a/--ascii] <program.b[f]>");
         return;
     }
     let ascii_mode = match args.iter().nth(1) {
