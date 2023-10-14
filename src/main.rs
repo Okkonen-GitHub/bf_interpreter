@@ -1,5 +1,8 @@
 use std::num::Wrapping;
 
+#[cfg(test)]
+mod test;
+
 const TAPE_LEN: usize = 30_000;
 
 #[derive(PartialEq, Debug)]
