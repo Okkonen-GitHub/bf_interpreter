@@ -102,10 +102,17 @@ fn run(commands: Vec<Command>, ascii_mode: bool) {
             }
             C::Input => {
                 let mut input = String::new();
-                match std::io::stdin().read_line(&mut input) {
-                    Ok(thing) => println!("{}", thing),
-                    Err(e) => eprintln!("Error reading stdin: {}", e),
+                std::io::stdin()
+                    .read_line(&mut input)
+                    .expect("Failed to read stdin");
+                let val = match input.trim().parse::<u8>() {
+                    Ok(n) => Wrapping(n),
+                    Err(e) => {
+                        eprintln!("Failed to parse input: {e}. Defaulting to 0");
+                        Wrapping(0)
+                    }
                 };
+                state[idx] = val;
             }
             C::JumpPast => {
                 if state[idx] == std::num::Wrapping(0) {
