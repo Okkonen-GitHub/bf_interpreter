@@ -17,6 +17,7 @@ enum Command {
     JumpBack,  // ]
 }
 
+#[cfg(debug_assertions)]
 impl std::fmt::Display for Command {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         use Command as C;
@@ -64,7 +65,6 @@ fn lex(source: &str) -> Vec<Command> {
 
 fn run(commands: Vec<Command>, ascii_mode: bool) {
     use Command as C;
-    // dbg!(&commands);
     let mut state: [Wrapping<u8>; TAPE_LEN] = [Wrapping(0u8); TAPE_LEN];
     let mut idx: usize = 0; // tape position
     let mut cdx: usize = 0; // command index
@@ -93,11 +93,11 @@ fn run(commands: Vec<Command>, ascii_mode: bool) {
             C::Increment => state[idx] += 1,
             C::Decrement => state[idx] -= 1,
             C::Output => {
-                let it = state[idx].0;
+                let ch = state[idx].0;
                 if ascii_mode {
-                    print!("{}", it as char);
+                    print!("{}", ch as char);
                 } else {
-                    print!("{}", it);
+                    print!("{}", ch);
                 }
             }
             C::Input => {
@@ -115,8 +115,8 @@ fn run(commands: Vec<Command>, ascii_mode: bool) {
                 state[idx] = val;
             }
             C::JumpPast => {
-                if state[idx] == std::num::Wrapping(0) {
-                    let mut jc: usize = 1;
+                if state[idx] == Wrapping(0) {
+                    let mut jc: usize = 1; // jump count
                     while jc > 0 {
                         cdx += 1;
                         if commands[cdx] == C::JumpPast {
@@ -128,8 +128,8 @@ fn run(commands: Vec<Command>, ascii_mode: bool) {
                 }
             }
             C::JumpBack => {
-                if state[idx] != std::num::Wrapping(0) {
-                    let mut jc: usize = 1;
+                if state[idx] != Wrapping(0) {
+                    let mut jc: usize = 1; // jump count
                     while jc > 0 {
                         cdx -= 1;
                         if commands[cdx] == C::JumpBack {
