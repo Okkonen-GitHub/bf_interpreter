@@ -9,18 +9,9 @@ mod tests {
         };
     }
     macro_rules! runcmd {
-        ($src:expr, $expect: expr) => {
+        ($src:expr, $expect: expr $(, $ascii_flag: literal)?) => {
             let cmd = Command::new("cargo")
-                .args(["run", "--", pathfmt!($src)])
-                .output()
-                .expect("Couldn't run the command");
-            let op = cmd.stdout;
-            let ex = $expect.chars().map(|x| x as u8).collect::<Vec<u8>>();
-            assert_eq!(op, ex)
-        };
-        ($src: expr, $expect: expr, $ascii_flag: literal) => {
-            let cmd = Command::new("cargo")
-                .args(["run", "--", $ascii_flag, pathfmt!($src)])
+                .args(["run", "--", $($ascii_flag,)? pathfmt!($src)])
                 .output()
                 .expect("Couldn't run the command");
             let op = cmd.stdout;
